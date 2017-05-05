@@ -4,12 +4,17 @@ Created on Thu May  4 22:30:42 2017
 
 @author: Matt Green
 """
+import os
+
+path = "C:/Users/Matt Green/Desktop/version-control/image_recognition"
+os.chdir(path)
 
 from urllib.request import urlretrieve
 from os.path import isfile, isdir
 from tqdm import tqdm
 import problem_unittests as tests
 import tarfile
+
 
 cifar10_dataset_folder_path = 'cifar-10-batches-py'
 
@@ -35,3 +40,13 @@ if not isdir(cifar10_dataset_folder_path):
 
 
 tests.test_folder_path(cifar10_dataset_folder_path)
+
+# %%
+
+import helper
+
+# Explore the dataset
+batch_id = 1
+sample_id = 5
+helper.display_stats(cifar10_dataset_folder_path, batch_id, sample_id)
+
