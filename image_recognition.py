@@ -50,3 +50,20 @@ batch_id = 1
 sample_id = 5
 helper.display_stats(cifar10_dataset_folder_path, batch_id, sample_id)
 
+# %%
+
+import numpy as np
+
+def normalize(x):
+    w = 0
+    pixels = np.ndarray((len(x), 32, 32, 3))
+    for p in x:
+        p = p.flatten()
+        p = ((p - 255) / 255) * -1
+        p = p.reshape(1, 32, 32, 3)
+        pixels[w, :, :, :] = p
+    return pixels
+
+tests.test_normalize(normalize)
+# Test Passed
+
