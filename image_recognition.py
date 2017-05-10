@@ -14,6 +14,9 @@ from os.path import isfile, isdir
 from tqdm import tqdm
 import problem_unittests as tests
 import tarfile
+import helper
+import numpy as np
+from sklearn import preprocessing
 
 
 cifar10_dataset_folder_path = 'cifar-10-batches-py'
@@ -43,16 +46,12 @@ tests.test_folder_path(cifar10_dataset_folder_path)
 
 # %%
 
-import helper
-
 # Explore the dataset
 batch_id = 1
 sample_id = 5
 helper.display_stats(cifar10_dataset_folder_path, batch_id, sample_id)
 
 # %%
-
-import numpy as np
 
 def normalize(x):
     w = 0
@@ -67,3 +66,12 @@ def normalize(x):
 tests.test_normalize(normalize)
 # Test Passed
 
+# %%
+
+def one_hot_encode(x):
+    classes = list(range(10))
+    lb = preprocessing.LabelBinarizer()
+    lb.fit(classes)
+    return lb.transform(x)
+    
+tests.test_one_hot_encode(one_hot_encode)
