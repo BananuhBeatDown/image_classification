@@ -57,4 +57,17 @@ def conv2d_maxpool(x_tensor, conv_num_outputs, conv_ksize, conv_strides, pool_ks
                          padding='SAME')
     return sub
 
+
 tests.test_con_pool(conv2d_maxpool)
+
+# %%
+
+# FLATTEN LAYER:
+
+def flatten(x_tensor):
+    shaped = x_tensor.get_shape().as_list()
+    reshaped = tf.reshape(x_tensor, [-1, shaped[1] * shaped[2] * shaped[3]])
+    return reshaped
+
+
+tests.test_flatten(flatten)
