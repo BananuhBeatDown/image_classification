@@ -82,3 +82,12 @@ def fully_conn(x_tensor, num_outputs):
     return tf.matmul(x_tensor, weight) + bias
 
 tests.test_fully_conn(fully_conn)
+
+# %%
+
+# OUTPUT LAYER:
+    
+def output(x_tensor, num_outputs):
+    return fully_conn(x_tensor, num_outputs)
+
+tests.test_output(output)
