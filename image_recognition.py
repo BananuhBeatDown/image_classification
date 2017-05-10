@@ -17,7 +17,7 @@ import tarfile
 import helper
 import numpy as np
 from sklearn import preprocessing
-
+import pickle
 
 cifar10_dataset_folder_path = 'cifar-10-batches-py'
 
@@ -75,3 +75,9 @@ def one_hot_encode(x):
     return lb.transform(x)
     
 tests.test_one_hot_encode(one_hot_encode)
+
+# %%
+
+# Preprocess Training, Validation, and Testing Data
+helper.preprocess_and_save_data("C:/Users/Matt Green/Desktop/version-control/image_recognition/cifar-10-batches-py", normalize, one_hot_encode)
+
