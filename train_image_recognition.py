@@ -71,3 +71,14 @@ def flatten(x_tensor):
 
 
 tests.test_flatten(flatten)
+
+# %%
+
+# FULLY CONNECTED LAYER:
+
+def fully_conn(x_tensor, num_outputs):
+    weight = tf.Variable(tf.truncated_normal(shape=[x_tensor.get_shape().as_list()[1], num_outputs], stddev=0.1)) 
+    bias = tf.Variable(tf.zeros(shape=num_outputs))
+    return tf.matmul(x_tensor, weight) + bias
+
+tests.test_fully_conn(fully_conn)
