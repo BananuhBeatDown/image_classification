@@ -91,3 +91,52 @@ def output(x_tensor, num_outputs):
     return fully_conn(x_tensor, num_outputs)
 
 tests.test_output(output)
+
+# %%
+
+# Create a convolutional model function
+
+depth1 = 16 
+depth2 = 32
+depth3 = 64
+depth_full = 1024
+classes = 10 
+
+
+def conv_net(x, keep_prob, ):
+    conv = conv2d_maxpool(x, depth1, (1,1), (1,1), (2,2), (2,2))
+    conv = conv2d_maxpool(conv, depth2, (1,1), (1,1), (2,2), (2,2))
+    conv = conv2d_maxpool(conv, depth3, (1,1), (1,1), (2,2), (2,2))
+    flat = flatten(conv)
+    full = fully_conn(flat, depth_full)
+    return output(full, classes)
+
+
+##############################
+## Build the Neural Network ##
+##############################
+
+# Remove previous weights, bias, inputs, etc..
+tf.reset_default_graph()
+
+# Inputs
+x = neural_net_image_input((32, 32, 3))
+y = neural_net_label_input(10)
+keep_prob = neural_net_keep_prob_input()
+
+# Model
+logits = conv_net(x, keep_prob)
+
+# Name logits Tensor, so that is can be loaded from disk after training
+logits = tf.identity(logits, name='logits')
+
+# Loss and Optimizer
+cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=logits, labels=y))
+optimizer = tf.train.AdamOptimizer().minimize(cost)
+
+# Accuracy
+correct_pred = tf.equal(tf.argmax(logits, 1), tf.argmax(y, 1))
+accuracy = tf.reduce_mean(tf.cast(correct_pred, tf.float32), name='accuracy')
+
+
+tests.test_conv_net(conv_net)
