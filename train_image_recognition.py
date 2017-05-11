@@ -103,7 +103,7 @@ depth_full = 1024
 classes = 10 
 
 
-def conv_net(x, keep_prob, ):
+def conv_net(x, keep_prob):
     conv = conv2d_maxpool(x, depth1, (1,1), (1,1), (2,2), (2,2))
     conv = conv2d_maxpool(conv, depth2, (1,1), (1,1), (2,2), (2,2))
     conv = conv2d_maxpool(conv, depth3, (1,1), (1,1), (2,2), (2,2))
@@ -140,3 +140,16 @@ accuracy = tf.reduce_mean(tf.cast(correct_pred, tf.float32), name='accuracy')
 
 
 tests.test_conv_net(conv_net)
+
+# %%
+
+# Train the neural network
+
+def train_neural_network(session, optimizer, keep_probability, feature_batch, label_batch):
+    feed_dict = {x : feature_batch, y : label_batch, keep_prob : keep_probability}
+    session.run([cost, optimizer, correct_pred, accuracy], feed_dict=feed_dict)
+    pass
+
+
+tests.test_train_nn(train_neural_network)
+
