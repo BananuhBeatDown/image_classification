@@ -176,3 +176,24 @@ def print_stats(session, feature_batch, label_batch, cost, accuracy):
 
 # %%
 
+epochs = 5
+batch_size = 128
+keep_probability = 0.7
+
+
+# %%
+
+# Train on a Single CIFAR-10 Batch
+
+print('Checking the Training on a Single Batch...')
+with tf.Session() as sess:
+    # Initializing the variables
+    sess.run(tf.global_variables_initializer())
+    
+    # Training cycle
+    for epoch in range(epochs):
+        batch_i = 1
+        for batch_features, batch_labels in helper.load_preprocess_training_batch(batch_i, batch_size):
+            train_neural_network(sess, optimizer, keep_probability, batch_features, batch_labels)
+        print('Epoch {:>2}, CIFAR-10 Batch {}:  '.format(epoch + 1, batch_i), end='')
+        print_stats(sess, batch_features, batch_labels, cost, accuracy)
