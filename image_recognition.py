@@ -4,10 +4,7 @@ Created on Thu May  4 22:30:42 2017
 
 @author: Matt Green
 """
-import os
 
-path = "C:/Users/Matt Green/Desktop/version-control/image_recognition"
-os.chdir(path)
 
 from urllib.request import urlretrieve
 from os.path import isfile, isdir
@@ -17,9 +14,10 @@ import tarfile
 import helper
 import numpy as np
 from sklearn import preprocessing
-import pickle
+
 
 cifar10_dataset_folder_path = 'cifar-10-batches-py'
+
 
 class DLProgress(tqdm):
     last_block = 0
@@ -58,13 +56,12 @@ def normalize(x):
     pixels = np.ndarray((len(x), 32, 32, 3))
     for p in x:
         p = p.flatten()
-        p = ((p - 255) / 255) * -1
+        p = ((p - 255) / 255)
         p = p.reshape(1, 32, 32, 3)
         pixels[w, :, :, :] = p
     return pixels
 
-tests.test_normalize(normalize)
-# Test Passed
+
 
 # %%
 
@@ -73,6 +70,7 @@ def one_hot_encode(x):
     lb = preprocessing.LabelBinarizer()
     lb.fit(classes)
     return lb.transform(x)
+   
     
 tests.test_one_hot_encode(one_hot_encode)
 
@@ -80,4 +78,3 @@ tests.test_one_hot_encode(one_hot_encode)
 
 # Preprocess Training, Validation, and Testing Data
 helper.preprocess_and_save_data("C:/Users/Matt Green/Desktop/version-control/image_recognition/cifar-10-batches-py", normalize, one_hot_encode)
-

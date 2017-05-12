@@ -163,6 +163,8 @@ tests.test_train_nn(train_neural_network)
 
 # %%
 
+# Show stats
+
 def print_stats(session, feature_batch, label_batch, cost, accuracy):
     current_cost = session.run(
         cost,
