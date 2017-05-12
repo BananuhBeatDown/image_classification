@@ -46,16 +46,17 @@ def conv2d_maxpool(x_tensor, conv_num_outputs, conv_ksize, conv_strides, pool_ks
     weight = tf.Variable(
                  tf.truncated_normal(
                      shape=[conv_ksize[0], conv_ksize[1], x_tensor.get_shape().as_list()[3], conv_num_outputs],
+                     mean=0.0,
                      stddev=0.1))
     bias = tf.Variable(tf.zeros(shape=conv_num_outputs))
     
     conv = tf.nn.conv2d(x_tensor, weight, strides=[1, conv_strides[0], conv_strides[1], 1], padding='SAME')
     hidden = tf.nn.relu(conv + bias)
-    sub = tf.nn.max_pool(hidden,
+    pool = tf.nn.max_pool(hidden,
                          ksize=[1, pool_ksize[0], pool_ksize[1], 1],
                          strides=[1, pool_strides[0], pool_strides[1], 1],
                          padding='SAME')
-    return sub
+    return pool
 
 
 tests.test_con_pool(conv2d_maxpool)
@@ -77,9 +78,9 @@ tests.test_flatten(flatten)
 # FULLY CONNECTED LAYER:
 
 def fully_conn(x_tensor, num_outputs):
-    weight = tf.Variable(tf.truncated_normal(shape=[x_tensor.get_shape().as_list()[1], num_outputs], stddev=0.1)) 
+    weight = tf.Variable(tf.truncated_normal(shape=[x_tensor.get_shape().as_list()[1], num_outputs], mean=0.0, stddev=0.1)) 
     bias = tf.Variable(tf.zeros(shape=num_outputs))
-    return tf.matmul(x_tensor, weight) + bias
+    return tf.nn.relu(tf.matmul(x_tensor, weight) + bias)
 
 tests.test_fully_conn(fully_conn)
 
@@ -88,7 +89,9 @@ tests.test_fully_conn(fully_conn)
 # OUTPUT LAYER:
     
 def output(x_tensor, num_outputs):
-    return fully_conn(x_tensor, num_outputs)
+    weight = tf.Variable(tf.truncated_normal(shape=[x_tensor.get_shape().as_list()[1], num_outputs], mean=0.0, stddev=0.1)) 
+    bias = tf.Variable(tf.zeros(shape=num_outputs))
+    return tf.matmul(x_tensor, weight) + bias
 
 tests.test_output(output)
 
@@ -96,20 +99,23 @@ tests.test_output(output)
 
 # Create a convolutional model function
 
-depth1 = 16 
-depth2 = 32
-depth3 = 64
-depth_full = 1024
+depth1 = 64 
+depth2 = 128
+depth3 = 512
+depth_full1 = 1024
+depth_full2 = 512
 classes = 10 
 
 
 def conv_net(x, keep_prob):
-    conv = conv2d_maxpool(x, depth1, (1,1), (1,1), (2,2), (2,2))
-    conv = conv2d_maxpool(conv, depth2, (1,1), (1,1), (2,2), (2,2))
-    conv = conv2d_maxpool(conv, depth3, (1,1), (1,1), (2,2), (2,2))
-    flat = flatten(conv)
-    full = fully_conn(flat, depth_full)
-    return output(full, classes)
+    model = conv2d_maxpool(x, depth1, (3,3), (1,1), (2,2), (2,2))
+    model = conv2d_maxpool(model, depth2, (3,3), (1,1), (2,2), (2,2))
+    model = conv2d_maxpool(model, depth3, (3,3), (1,1), (2,2), (2,2))
+    model = flatten(model)
+    model = fully_conn(model, depth_full1)
+    model = tf.nn.dropout(model, keep_prob)
+    model = fully_conn(model, depth_full2)
+    return output(model, classes)
 
 
 ##############################
@@ -146,10 +152,27 @@ tests.test_conv_net(conv_net)
 # Train the neural network
 
 def train_neural_network(session, optimizer, keep_probability, feature_batch, label_batch):
-    feed_dict = {x : feature_batch, y : label_batch, keep_prob : keep_probability}
-    session.run([cost, optimizer, correct_pred, accuracy], feed_dict=feed_dict)
-    pass
+    feed_dict = {
+            x: feature_batch, 
+            y: label_batch, 
+            keep_prob: keep_probability}
+    session.run(optimizer, feed_dict=feed_dict)
 
 
 tests.test_train_nn(train_neural_network)
+
+# %%
+
+def print_stats(session, feature_batch, label_batch, cost, accuracy):
+    current_cost = session.run(
+        cost,
+        feed_dict={x: feature_batch, y: label_batch, keep_prob: 1.})
+    valid_accuracy = session.run(
+        accuracy,
+        feed_dict={x: valid_features, y: valid_labels, keep_prob: 1.})
+    print('Loss: {:<8.3} Valid Accuracy: {:<5.3}'.format(
+        current_cost,
+        valid_accuracy))
+
+# %%
 
