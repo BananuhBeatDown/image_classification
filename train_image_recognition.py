@@ -2,16 +2,21 @@
 """
 Created on Wed May 10 16:59:36 2017
 
+
+
 @author: Matt Green
 """
+
+path = "C:/Users/Matt Green/desktop/version-control/image_recognition"
 import os
-path = "C:/Users/Matt Green/Desktop/version-control/image_recognition"
 os.chdir(path)
 
 import pickle
 import problem_unittests as tests
 import helper
 import tensorflow as tf
+import random
+
 
 # Load the Preprocessed Validation data
 valid_features, valid_labels = pickle.load(open('preprocess_validation.p', mode='rb'))
@@ -82,6 +87,7 @@ def fully_conn(x_tensor, num_outputs):
     bias = tf.Variable(tf.zeros(shape=num_outputs))
     return tf.nn.relu(tf.matmul(x_tensor, weight) + bias)
 
+
 tests.test_fully_conn(fully_conn)
 
 # %%
@@ -93,14 +99,15 @@ def output(x_tensor, num_outputs):
     bias = tf.Variable(tf.zeros(shape=num_outputs))
     return tf.matmul(x_tensor, weight) + bias
 
+
 tests.test_output(output)
 
 # %%
 
 # Create a convolutional model function
 
-depth1 = 64 
-depth2 = 128
+depth1 = 128
+depth2 = 256
 depth3 = 512
 depth_full1 = 1024
 depth_full2 = 512
@@ -197,5 +204,31 @@ with tf.Session() as sess:
         batch_i = 1
         for batch_features, batch_labels in helper.load_preprocess_training_batch(batch_i, batch_size):
             train_neural_network(sess, optimizer, keep_probability, batch_features, batch_labels)
-        print('Epoch {:>2}, CIFAR-10 Batch {}:  '.format(epoch + 1, batch_i), end='')
+        print('Epoch {:>4}, CIFAR-10 Batch {}:  '.format(epoch + 1, batch_i), end='')
         print_stats(sess, batch_features, batch_labels, cost, accuracy)
+
+# %%
+
+# Train on all CIFAR-10 Batches
+
+save_model_path = './image_classification'
+
+print('Training...')
+with tf.Session() as sess:
+    # Initializing the variables
+    sess.run(tf.global_variables_initializer())
+    
+    # Training cycle
+    for epoch in range(epochs):
+        # Loop over all batches
+        n_batches = 5
+        for batch_i in range(1, n_batches + 1):
+            for batch_features, batch_labels in helper.load_preprocess_training_batch(batch_i, batch_size):
+                train_neural_network(sess, optimizer, keep_probability, batch_features, batch_labels)
+            print('Epoch {:>2}, CIFAR-10 Batch {}:  '.format(epoch + 1, batch_i), end='')
+            print_stats(sess, batch_features, batch_labels, cost, accuracy)
+            
+    # Save Model
+    saver = tf.train.Saver()
+    save_path = saver.save(sess, save_model_path)
+    
