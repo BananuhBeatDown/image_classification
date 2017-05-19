@@ -4,7 +4,9 @@ Created on Thu May  4 22:30:42 2017
 
 @author: Matt Green
 """
-
+path = "C:/Users/Matt Green/desktop/version-control/image_recognition"
+import os
+os.chdir(path)
 
 from urllib.request import urlretrieve
 from os.path import isfile, isdir
@@ -56,12 +58,13 @@ def normalize(x):
     pixels = np.ndarray((len(x), 32, 32, 3))
     for p in x:
         p = p.flatten()
-        p = ((p - 255) / 255)
+        p = abs((p - 128.) / 128.)
         p = p.reshape(1, 32, 32, 3)
         pixels[w, :, :, :] = p
     return pixels
 
 
+tests.test_normalize(normalize)
 
 # %%
 
