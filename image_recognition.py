@@ -4,6 +4,7 @@ Created on Thu May  4 22:30:42 2017
 
 @author: Matt Green
 """
+
 path = "C:/Users/Matt Green/desktop/version-control/image_recognition"
 import os
 os.chdir(path)
@@ -51,6 +52,7 @@ batch_id = 1
 sample_id = 5
 helper.display_stats(cifar10_dataset_folder_path, batch_id, sample_id)
 
+
 # %%
 
 def normalize(x):
@@ -61,6 +63,7 @@ def normalize(x):
         p = abs((p - 128.) / 128.)
         p = p.reshape(1, 32, 32, 3)
         pixels[w, :, :, :] = p
+        w += 1      
     return pixels
 
 
