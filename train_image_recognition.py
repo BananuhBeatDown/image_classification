@@ -2,20 +2,13 @@
 """
 Created on Wed May 10 16:59:36 2017
 
-
-
 @author: Matt Green
 """
-
-path = "C:/Users/Matt Green/desktop/version-control/image_recognition"
-import os
-os.chdir(path)
 
 import pickle
 import problem_unittests as tests
 import helper
 import tensorflow as tf
-import random
 
 
 # Load the Preprocessed Validation data
@@ -213,7 +206,7 @@ with tf.Session() as sess:
 
 save_model_path = './image_classification'
 
-print('Training...')
+print('Training on all 5 batches...')
 with tf.Session() as sess:
     # Initializing the variables
     sess.run(tf.global_variables_initializer())

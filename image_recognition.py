@@ -5,10 +5,6 @@ Created on Thu May  4 22:30:42 2017
 @author: Matt Green
 """
 
-path = "C:/Users/Matt Green/desktop/version-control/image_recognition"
-import os
-os.chdir(path)
-
 from urllib.request import urlretrieve
 from os.path import isfile, isdir
 from tqdm import tqdm
@@ -52,7 +48,6 @@ batch_id = 1
 sample_id = 5
 helper.display_stats(cifar10_dataset_folder_path, batch_id, sample_id)
 
-
 # %%
 
 def normalize(x):
@@ -83,4 +78,5 @@ tests.test_one_hot_encode(one_hot_encode)
 # %%
 
 # Preprocess Training, Validation, and Testing Data
-helper.preprocess_and_save_data("C:/Users/Matt Green/Desktop/version-control/image_recognition/cifar-10-batches-py", normalize, one_hot_encode)
+print("Preprocessing and saving data...")
+helper.preprocess_and_save_data("cifar-10-batches-py", normalize, one_hot_encode)

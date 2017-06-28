@@ -1,12 +1,7 @@
 import os
 import numpy as np
 import tensorflow as tf
-import random
 from unittest.mock import MagicMock
-
-
-def _print_success_message():
-    print('Tests Passed')
 
 
 def test_folder_path(cifar10_dataset_folder_path):
@@ -43,7 +38,7 @@ def test_normalize(normalize):
     assert normalize_out.max() <= 1 and normalize_out.min() >= 0,\
         'Incorect Range. {} to {} found'.format(normalize_out.min(), normalize_out.max())
 
-    _print_success_message()
+    print('Normalization Tests Passed.')
 
 
 def test_one_hot_encode(one_hot_encode):
@@ -72,7 +67,7 @@ def test_one_hot_encode(one_hot_encode):
         '{}\n' \
         'Make sure you save the map of labels to encodings outside of the function.'.format(enc_labels, new_enc_labels)
 
-    _print_success_message()
+    print('One-Hot-Encode Tests Passed.')
 
 
 def test_nn_image_inputs(neural_net_image_input):
@@ -135,7 +130,7 @@ def test_con_pool(conv2d_maxpool):
     assert conv2d_maxpool_out.get_shape().as_list() == [None, 4, 4, 10],\
         'Incorrect Shape.  Found {} shape'.format(conv2d_maxpool_out.get_shape().as_list())
 
-    _print_success_message()
+    print('Convolution Layer Test Passed.')
 
 
 def test_flatten(flatten):
@@ -145,7 +140,7 @@ def test_flatten(flatten):
     assert flat_out.get_shape().as_list() == [None, 10*30*6],\
         'Incorrect Shape.  Found {} shape'.format(flat_out.get_shape().as_list())
 
-    _print_success_message()
+    print('Flatten Layer Test Passed.')
 
 
 def test_fully_conn(fully_conn):
@@ -157,7 +152,7 @@ def test_fully_conn(fully_conn):
     assert fc_out.get_shape().as_list() == [None, 40],\
         'Incorrect Shape.  Found {} shape'.format(fc_out.get_shape().as_list())
 
-    _print_success_message()
+    print('Flatten Layer Test Passed.')
 
 
 def test_output(output):
@@ -169,7 +164,7 @@ def test_output(output):
     assert output_out.get_shape().as_list() == [None, 40],\
         'Incorrect Shape.  Found {} shape'.format(output_out.get_shape().as_list())
 
-    _print_success_message()
+    print('Output Layer Test Passed.')
 
 
 def test_conv_net(conv_net):
@@ -196,4 +191,4 @@ def test_train_nn(train_neural_network):
 
     assert mock_session.run.called, 'Session not used'
 
-    _print_success_message()
+    print('Neural Network Test Passed.')
