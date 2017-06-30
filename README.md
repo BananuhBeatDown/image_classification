@@ -1,6 +1,6 @@
 # Classifying Images using a Neural Network
 
-This program classifies images from the [CIFAR-10 dataset](https://www.cs.toronto.edu/~kriz/cifar.html) using a Convolutional Neural Network (CNN). The dataset consists of airplanes, dogs, cats, and other objects. The images are preprocessed and normalized then used to train a CNN consisting of convolutional, max pooling, dropout, fully connected, and output layers.
+This program classifies images from the [CIFAR-10 dataset](https://www.cs.toronto.edu/~kriz/cifar.html) using a Convolutional Neural Network (CNN). The images are preprocessed and normalized then used to train a CNN consisting of convolutional, max pooling, dropout, fully connected, and output layers.
 
 
 In-depth analysis and examples can be found in [dlnd_image_classification.ipynb](https://github.com/BananuhBeatDown/image_recognition/blob/master/dlnd_image_classification.ipynb).
@@ -70,5 +70,5 @@ You can experiment with the CNN by altering:
 
 <img src="https://user-images.githubusercontent.com/10539813/27656695-3ef257a6-5c4a-11e7-8644-eb4df95054f4.png" width="512">
 
-### License
+## License
 The image_classification program is a public domain work, dedicated using [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/). I encourage you to use it, and enhance your understanding of CNNs and the deep learning concepts therein. :)
